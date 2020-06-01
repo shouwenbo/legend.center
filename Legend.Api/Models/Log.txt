@@ -1,0 +1,8 @@
+﻿DB First:
+
+初始化:
+Scaffold-DbContext "Data Source=172.20.66.253;Initial Catalog=Test20200518;User ID=sa;Password=shyrsql2008$;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+更新直接在初始化的后面加 -Force
+即:
+Scaffold-DbContext "Data Source=172.20.66.253;Initial Catalog=Test20200518;User ID=sa;Password=shyrsql2008$;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
