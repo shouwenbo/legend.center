@@ -50,13 +50,13 @@ namespace Legend.Api
                 options.SaveToken = true;
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    ValidateIssuer = true,           // 是否验证 Issuer
-                    ValidateAudience = true,         // 是否验证 Audience
-                    ValidateLifetime = true,         // 是否验证失效时间
-                    ValidateIssuerSigningKey = true, // 是否验证 SecurityKey
+                    ValidateIssuer = false,           // 是否验证 Issuer
+                    ValidateAudience = false,         // 是否验证 Audience
+                    ValidateLifetime = false,         // 是否验证失效时间
+                    ValidateIssuerSigningKey = false, // 是否验证 SecurityKey
                     ValidAudience = "www.baidu.com", // Configuration["audience"], // Audience
                     ValidIssuer = "www.baidu.com",   // Configuration["issuer"],   // Issuer, 这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("lajj89757")) // 拿到 SecurityKey
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("lajj89757_aaa_vvv_ccc_vvv")) // 拿到 SecurityKey
                 };
             });
             #region 微软DI注入
@@ -100,13 +100,20 @@ namespace Legend.Api
             // 强制使用 https, 访问 http 后会自动 307 重定向到 https, 发现这个问题花了好久...测试阶段注释这一行代码就好
             // app.UseHttpsRedirection(); 
 
+            
+
             app.UseRouting();
+
+            
 
             app.UseCors(MyAllowSpecificOrigins); // 注入跨域请求
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
-            app.UseAuthentication();
+            
+
 
             app.UseEndpoints(endpoints =>
             {

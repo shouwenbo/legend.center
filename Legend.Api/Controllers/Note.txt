@@ -5,3 +5,5 @@
    readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
    services.AddCors(options => { options.AddPolicy(MyAllowSpecificOrigins,builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());});
    app.UseCors(MyAllowSpecificOrigins);
+
+3: 被Jwt的问题折磨一天了，一直报401，结果自己试了很久，发现应该先 app.UseAuthentication(); 再 app.UseAuthorization();，这样才行，而我的顺序弄反了。。简直可恶啊，浪费我一整天的时间，一定要先 app.UseAuthentication() 再 app.UseAuthorization()

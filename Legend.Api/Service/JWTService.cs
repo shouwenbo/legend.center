@@ -30,7 +30,7 @@ namespace Legend.Api.Service
             {
                 new Claim(ClaimTypes.Name, userName)
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(privateKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("lajj89757_aaa_vvv_ccc_vvv"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: _configuration["issuer"],
