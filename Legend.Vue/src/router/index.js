@@ -22,6 +22,10 @@ export default new Router({
       }
     ]
   }, {
+    path: '/PassportLogin',
+    name: 'PassportLogin',
+    component: resolve => require(['@/pages/login/passport'], resolve)
+  }, {
     path: '/HelloWorld',
     name: 'HelloWorld',
     component: HelloWorld

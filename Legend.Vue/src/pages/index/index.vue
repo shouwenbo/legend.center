@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import fetch from '@/api/fetch'
 export default {
   name: 'Index',
   data () {
@@ -25,7 +26,19 @@ export default {
   },
   methods: {
     onTabbarChange (index) {
+      fetch({
+        url: `/api/PassPort/info`,
+        method: 'post',
+        data: {
+          parentId: 1
+        }
+      }).then(data => {
+        console.log(data, 123456)
+      })
 
+      // fetch.post(`http://172.20.70.152:53882/api/PassPort/login`, {}).then(data => {
+      //   console.log(data, 123456)
+      // })
     }
   }
 }

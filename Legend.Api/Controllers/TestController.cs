@@ -14,8 +14,9 @@ namespace Legend.Api.Controllers
     public class TestController : ControllerBase
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly IJWTService _jwtService;
-        public TestController(IWebHostEnvironment hostingEnvironment, IJWTService jwtService)
+        private readonly JWTService _jwtService;
+        public JWTService JWTService { get; set; }
+        public TestController(IWebHostEnvironment hostingEnvironment, JWTService jwtService)
         {
             _hostingEnvironment = hostingEnvironment;
             _jwtService = jwtService;

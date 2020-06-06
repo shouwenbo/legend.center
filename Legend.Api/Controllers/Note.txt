@@ -1,0 +1,7 @@
+﻿日记：
+1：PostMan 请求接口怎么请求也请求不通，后来发现是因为访问地址被强制307到了https，解决方案是把PostMan的 SSL certificate verification 设置为 OFF，然后要再Api项目的属性->调试中，把Https的设置关掉才行
+
+2: 注册跨域中间件很重要...axios请求不到这个接口, 花了好久才找到这个方法解决
+   readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+   services.AddCors(options => { options.AddPolicy(MyAllowSpecificOrigins,builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());});
+   app.UseCors(MyAllowSpecificOrigins);

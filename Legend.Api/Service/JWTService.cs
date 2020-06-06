@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -10,23 +12,25 @@ using System.Threading.Tasks;
 
 namespace Legend.Api.Service
 {
-    public class JWTService : IJWTService
+    public class JWTService
     {
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public JWTService(IConfiguration configuration)
+        public JWTService(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             _configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public string GetToken(string userName)
         {
-            var sk = @"-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYLmZKhs+uiW8xANDsBiZUkDsJ10C1D93kQqW9nXQ7qrFO8Q9BtBoVScDVbAyqk+LgIo5ThfvUCUN5POyeNggeDPLKfetxJxOBo3rqtyypze2epqqx55c5t+9mYB89rYcEc9gtGrBNpWp5jgA+43JnrivIkdYC/AkkqUKDajLDWQIDAQAB-----END PUBLIC KEY-----";
+            var privateKey = File.ReadAllText($"{_hostingEnvironment.ContentRootPath}/static/pri.key.txt");
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, userName)
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(sk));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(privateKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: _configuration["issuer"],
@@ -40,7 +44,8 @@ namespace Legend.Api.Service
 
         public string TestGet()
         {
-            return "abcdefg";
+            var a = _configuration["AllowedHosts"];
+            return a;
         }
     }
 }
