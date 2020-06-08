@@ -36,7 +36,7 @@ namespace Legend.Api.Service
                 issuer: _configuration["issuer"],
                 audience: _configuration["audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(24),
+                expires: DateTime.Now.AddSeconds(30),
                 signingCredentials: creds);
             string returnToken = new JwtSecurityTokenHandler().WriteToken(token);
             return returnToken;

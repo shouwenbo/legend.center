@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Legend.Api.Middleware;
 using Legend.Api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -48,12 +49,30 @@ namespace Legend.Api
             {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
+                options.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Query["access_token"];
+                        return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine(context);
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        Console.WriteLine(context);
+                        return Task.CompletedTask;
+                    }
+                };
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    ValidateIssuer = false,           // 是否验证 Issuer
-                    ValidateAudience = false,         // 是否验证 Audience
-                    ValidateLifetime = false,         // 是否验证失效时间
-                    ValidateIssuerSigningKey = false, // 是否验证 SecurityKey
+                    ValidateIssuer = true,           // 是否验证 Issuer
+                    ValidateAudience = true,         // 是否验证 Audience
+                    ValidateLifetime = true,         // 是否验证失效时间
+                    ValidateIssuerSigningKey = true, // 是否验证 SecurityKey
                     ValidAudience = "www.baidu.com", // Configuration["audience"], // Audience
                     ValidIssuer = "www.baidu.com",   // Configuration["issuer"],   // Issuer, 这两项和前面签发jwt的设置一致
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("lajj89757_aaa_vvv_ccc_vvv")) // 拿到 SecurityKey
@@ -107,6 +126,8 @@ namespace Legend.Api
             
 
             app.UseCors(MyAllowSpecificOrigins); // 注入跨域请求
+
+            app.UseErrorHandling(); // 自定义错误提示配置
 
             app.UseAuthentication();
 
